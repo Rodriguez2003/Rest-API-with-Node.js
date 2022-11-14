@@ -51,6 +51,8 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+//Soft delete
+
 //Delete
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;

@@ -25,5 +25,5 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/usuarios", usuarios);
 
 app.listen(PORT, function () {
-  console.log(`http://localhost:${PORT}`);
+  console.log(`http://localhost:${PORT}/`);
 });
