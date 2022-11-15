@@ -46,6 +46,6 @@ const createItems = async (req, res) => {
 
 module.exports = {
   getItems,
-  createItems,
   findItems,
+  createItems,
 };

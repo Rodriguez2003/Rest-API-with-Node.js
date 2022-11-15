@@ -2,9 +2,7 @@ const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const { getItems } = require("./controllers/index");
-const { createItems } = require("./controllers/index");
-const { findItems } = require("./controllers/index");
+const { getItems, findItems, createItems } = require("./controllers/index");
 
 //middelware
 app.use(express.json());
