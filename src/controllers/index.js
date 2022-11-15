@@ -1,5 +1,6 @@
 const nano = require("../config/index");
-const db = nano.use("prueba");
+const CouchDB = process.env.DB_DATABASE;
+const Couch = nano.use(CouchDB);
 
 /**
  *  getItems
@@ -7,7 +8,7 @@ const db = nano.use("prueba");
 
 //GET all
 async function getItems(req, res) {
-  const doclist = await db.list({ include_docs: true });
+  const doclist = await Couch.list({ include_docs: true });
   res.send(doclist.rows);
 }
 
@@ -15,7 +16,7 @@ async function getItems(req, res) {
 const findItems = async (req, res) => {
   try {
     const { apellido } = req.params;
-    const data = await db.find({
+    const data = await Couch.find({
       selector: {
         apellido: apellido,
       },
@@ -30,7 +31,7 @@ const findItems = async (req, res) => {
 const createItems = async (req, res) => {
   try {
     const { nombre, apellido, rol } = req.body;
-    db.insert({ nombre, apellido, rol }).then((body) => {
+    Couch.insert({ nombre, apellido, rol }).then((body) => {
       if (!nombre || !apellido || !rol) {
         return res.status(400).json({
           error: "Campos vacíos",
