@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 const nano = require("nano")(
-  `http://${process.env.USER}:${process.env.PASSWORD}@localhost:5984`
+  `http://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@localhost:5984`
 );
 
 module.exports = nano;
