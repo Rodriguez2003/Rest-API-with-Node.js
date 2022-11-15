@@ -33,10 +33,10 @@ const createItems = async (req, res) => {
     db.insert({ nombre, apellido, rol }).then((body) => {
       if (!nombre || !apellido || !rol) {
         return res.status(400).json({
-          error: "Campos Vacíos",
+          error: "Campos vacíos",
         });
       } else {
-        res.json(db);
+        res.json(body);
       }
     });
   } catch (err) {
