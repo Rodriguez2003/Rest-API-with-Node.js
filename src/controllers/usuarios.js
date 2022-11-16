@@ -1,20 +1,13 @@
 const Usuario = require("../models/Usuario");
 
-const router = require("express").Router();
-
 //GET all
-// router.get("/", async (req, res) => {
-//   const usuarios = await Usuario.findAll();
-//   res.json(usuarios);
-// });
-
-async function getUsers(req, res){
+async function getUsers(req, res) {
   const usuarios = await Usuario.findAll();
   res.json(usuarios);
 }
 
 //GET find by id
-router.get("/:id", async (req, res) => {
+const getUserById = async (req, res) => {
   const { id } = req.params;
   const usuario = await Usuario.findByPk(id);
   if (!usuario) {
@@ -23,10 +16,10 @@ router.get("/:id", async (req, res) => {
     });
   }
   res.json(usuario);
-});
+};
 
 //Post
-router.post("/", async (req, res) => {
+const userCreate = async (req, res) => {
   const { nombre, email } = req.body;
 
   if (!nombre || !email) {
@@ -36,10 +29,10 @@ router.post("/", async (req, res) => {
   }
   const usuario = await Usuario.create({ nombre, email });
   res.json(usuario);
-});
+};
 
 //Update
-router.put("/:id", async (req, res) => {
+const userUpdate = async (req, res) => {
   const { id } = req.params;
   const usuario = await Usuario.findByPk(id);
   const { nombre, email } = req.body;
@@ -54,10 +47,10 @@ router.put("/:id", async (req, res) => {
       res.json(usuario);
     });
   }
-});
+};
 
 //Delete
-router.delete("/:id", async (req, res) => {
+const userDelete = async (req, res) => {
   const { id } = req.params;
   const usuario = await Usuario.findByPk(id);
   if (!usuario) {
@@ -68,9 +61,12 @@ router.delete("/:id", async (req, res) => {
     usuario.destroy();
     res.json(usuario);
   }
-});
+};
 
-module.exports = router;
 module.exports = {
-  getUsers
-}
+  getUsers,
+  getUserById,
+  userCreate,
+  userUpdate,
+  userDelete,
+};
