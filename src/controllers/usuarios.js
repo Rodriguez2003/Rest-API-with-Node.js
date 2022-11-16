@@ -3,10 +3,15 @@ const Usuario = require("../models/Usuario");
 const router = require("express").Router();
 
 //GET all
-router.get("/", async (req, res) => {
+// router.get("/", async (req, res) => {
+//   const usuarios = await Usuario.findAll();
+//   res.json(usuarios);
+// });
+
+async function getUsers(req, res){
   const usuarios = await Usuario.findAll();
   res.json(usuarios);
-});
+}
 
 //GET find by id
 router.get("/:id", async (req, res) => {
@@ -66,3 +71,6 @@ router.delete("/:id", async (req, res) => {
 });
 
 module.exports = router;
+module.exports = {
+  getUsers
+}
