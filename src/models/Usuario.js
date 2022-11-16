@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
-const db = require("../db/database");
+const MySQL = require("../config/dbconnection");
 
-const Usuario = db.define("Usuarios", {
+const Usuario = MySQL.define("Usuarios", {
   nombre: {
     type: DataTypes.STRING,
   },
