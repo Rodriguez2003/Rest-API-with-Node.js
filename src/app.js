@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const logger = require("./helpers/logger");
+const Log = require("./helpers/logger");
 const usuarios = require("./routes/Users");
 const Couch = require("./routes/routes");
 const SQL = require("./config/dbconnection");
@@ -31,5 +31,5 @@ app.use("/api", Couch);
 
 // Server
 app.listen(PORT, function () {
-  logger.info(`http://localhost:${PORT}/`);
+  Log.info(`http://localhost:${PORT}/`);
 });
