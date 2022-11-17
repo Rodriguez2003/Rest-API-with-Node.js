@@ -1,5 +1,5 @@
 const Usuario = require("../models/Usuario");
-const Log = require("../helpers/logger");
+const { logErr, logInfo } = require("../helpers/logger");
 
 //GET all
 async function getUsers(req, res) {
@@ -24,13 +24,13 @@ const userCreate = async (req, res) => {
   const { nombre, email } = req.body;
 
   if (!nombre || !email) {
-    Log.error("Error");
+    logErr.error("Error");
     return res.status(400).json({
       error: "Campos Vacíos",
     });
   }
   const usuario = await Usuario.create({ nombre, email });
-  Log.info("Nuevo usuario creado", { operation: "INSERT" });
+  logInfo.info("Nuevo usuario creado", { operation: "INSERT" });
   res.json(usuario);
 };
 
