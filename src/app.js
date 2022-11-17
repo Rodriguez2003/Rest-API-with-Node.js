@@ -31,5 +31,5 @@ app.use("/api", Couch);
 
 // Server
 app.listen(PORT, function () {
-  logger.log("info", `http://localhost:${PORT}/`);
+  logger.info(`http://localhost:${PORT}/`);
 });

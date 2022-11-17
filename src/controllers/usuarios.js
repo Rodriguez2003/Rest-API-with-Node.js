@@ -1,4 +1,5 @@
 const Usuario = require("../models/Usuario");
+const logger = require("../helpers/logger");
 
 //GET all
 async function getUsers(req, res) {
@@ -23,11 +24,13 @@ const userCreate = async (req, res) => {
   const { nombre, email } = req.body;
 
   if (!nombre || !email) {
+    logger.error("Error", { operation: "INSERT" });
     return res.status(400).json({
       error: "Campos Vacíos",
     });
   }
   const usuario = await Usuario.create({ nombre, email });
+  logger.info("Nuevo Usuario Agregado");
   res.json(usuario);
 };
 

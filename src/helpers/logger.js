@@ -5,6 +5,7 @@ const logger = createLogger({
     new transports.Console({
       level: "info",
       format: format.combine(format.timestamp(), format.json()),
+      defaultMeta: { operation: "server running" },
     }),
   ],
 });
