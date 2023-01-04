@@ -1,5 +1,5 @@
 const Usuario = require("../models/Usuario");
-const { logErr, logInfo } = require("../helpers/logger");
+const { logErr, logInfo } = require("../Utils/logger");
 
 //GET all
 async function getUsers(req, res) {

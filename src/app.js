@@ -3,7 +3,7 @@ const cors = require("cors");
 const usuarios = require("./routes/Users");
 const Couch = require("./routes/routes");
 const SQL = require("./config/dbconnection");
-const logger = require("./helpers/Log");
+const loggers = require("./Utils/logger");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -12,10 +12,10 @@ const PORT = process.env.PORT || 3000;
   try {
     await SQL.authenticate();
     await SQL.sync();
-    logger.info("Conexión Exitosa");
+    loggers.mjson.info("Conexión Exitosa");
   } catch (error) {
     // throw new Error(error);
-    logger.error(error);
+    loggers.simple.error(error);
   }
 })();
 
@@ -32,5 +32,5 @@ app.use("/api", Couch);
 
 // Server
 app.listen(PORT, function () {
-  logger.info(`server running: http://localhost:${PORT}/`);
+  loggers.mjson.info(`Server started and running on http://localhost:${PORT}/`);
 });
