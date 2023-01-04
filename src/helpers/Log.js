@@ -1,42 +1,106 @@
-const { createLogger, transports, format } = require("winston");
-const winston = require("winston");
-require("winston-couchdb").Couchdb;
+/* const winston = require("winston");
 
-const loggerFormat = format.combine(
-  format.errors({ stack: true }),
-  format.timestamp(),
-  format.metadata(),
-  format.json()
-);
+// const remoteLog = new winston.transports.Http({
+//   host: "localhost",
+//   port: 5984,
+//   path: "/example",
+// });
 
-const consoleFormat = {
-  format: format.combine(
-    format.splat(),
-    format.simple(),
-    format.errors({ stack: true })
-  ),
-  level: "info",
-  defaultMeta: { operation: "server running" },
-  handleExceptions: true,
-  json: false,
-  colorize: true,
+// define the custom settings for each transport (file, console)
+const options = {
+  file: {
+    level: "info",
+    format: winston.format.combine(
+      winston.format.timestamp(),
+      winston.format.json()
+    ),
+    filename: `logs/app.log`,
+    handleExceptions: true,
+    json: true,
+    maxsize: 5242880, // 5MB
+    maxFiles: 5,
+    colorize: false,
+  },
+  console: {
+    level: "debug",
+    handleExceptions: true,
+    json: false,
+    colorize: true,
+  },
+  Http: {
+    level: "info",
+    host: "localhost",
+    port: 5984,
+    path: "/example",
+    handleExceptions: true,
+    json: true,
+  },
 };
 
-const logger = winston.createLogger({
-  level: "info",
-  format: loggerFormat,
-  transports: [
-    //
-    // - Write to all logs with level `info` and below to `combined.log`
-    // - Write all logs error (and below) to `error.log`.
-    //
-    new winston.transports.File({ filename: "error.log", level: "error" }),
-    new winston.transports.File({ filename: "combined.log" }),
-    new winston.transports.Console(consoleFormat),
-  ],
+// instantiate a new Winston Logger with the settings defined above
+let logger;
+if (process.env.logging === "off") {
+  logger = winston.createLogger({
+    transports: [new winston.transports.File(options.file)],
+    exitOnError: false, // do not exit on handled exceptions
+  });
+} else {
+  logger = winston.createLogger({
+    defaultMeta: { operation: "" },
+    transports: [
+      new winston.transports.File(options.file),
+      new winston.transports.Console(options.console),
+      new winston.transports.Http(options.file),
+    ],
+    exitOnError: false, // do not exit on handled exceptions
+  });
+}
+
+// create a stream object with a 'write' function that will be used by `morgan`
+// logger.stream = {
+//   write(message) {
+//     logger.info(message);
+//   },
+// };
+
+module.exports = logger;
+ */
+
+const { createLogger, format, transports } = require("winston");
+const winston = require("winston");
+winstonCouch = require("winston-couchdb").Couchdb;
+
+winston.add(new winstonCouch(), {
+  host: "localhost",
+  port: 5984,
+  db: "winston",
+  // optional
+  auth: { username: "Admin", password: "12345" },
+  secure: false,
 });
 
-winston.add(logger);
-//new winston.transports.File();
+const options = {
+  file: {
+    filename: `src/logs/app.log`,
+    handleExceptions: true,
+    json: true,
+    maxsize: 5242880, // 5MB
+    maxFiles: 5,
+    colorize: false,
+  },
+  console: {
+    handleExceptions: true,
+    json: false,
+    colorize: true,
+  },
+};
+
+const logger = createLogger({
+  format: format.combine(format.timestamp(), format.json()),
+  transports: [
+    new transports.File(options.file),
+    new transports.Console(options.console),
+  ],
+});
 
 module.exports = logger;
