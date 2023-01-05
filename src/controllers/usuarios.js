@@ -1,5 +1,10 @@
 const Usuario = require("../models/Usuario");
-const { logErr, logInfo } = require("../Utils/logger");
+const loggers = require("../Utils/logger");
+
+//Couchconnection
+const nano = require("../config/index");
+const CouchDB = process.env.DB_DATABASE;
+const db = nano.use(CouchDB);
 
 //GET all
 async function getUsers(req, res) {
@@ -17,21 +22,28 @@ const getUserById = async (req, res) => {
     });
   }
   res.json(usuario);
+  db.insert(usuario);
 };
 
 //Post
 const userCreate = async (req, res) => {
-  const { nombre, email } = req.body;
-
-  if (!nombre || !email) {
-    logErr.error("Error");
-    return res.status(400).json({
-      error: "Campos Vacíos",
-    });
+  try {
+    const { nombre, email } = req.body;
+    const usuario = await Usuario.create({ nombre, email });
+    if (!nombre || !email) {
+      return res.status(400).json({
+        error: "Campos Vacíos",
+      });
+    } else {
+      loggers.mjson.info("Nuevo usuario creado" + usuario);
+      res.json(usuario);
+      db.insert(usuario);
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+    loggers.simple.error(err);
+    db.insert(err);
   }
-  const usuario = await Usuario.create({ nombre, email });
-  logInfo.info("Nuevo usuario creado", { operation: "INSERT" });
-  res.json(usuario);
 };
 
 //Update

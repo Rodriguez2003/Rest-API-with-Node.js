@@ -7,15 +7,22 @@ const loggers = require("./Utils/logger");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+//Couchconnection
+const nano = require("./config/index");
+const CouchDB = process.env.DB_DATABASE;
+const db = nano.use(CouchDB);
+
 //DBconnection
 (async () => {
   try {
     await SQL.authenticate();
     await SQL.sync();
     loggers.mjson.info("Conexión Exitosa");
+    db.insert(loggers.mjson.info("Conexión Exitosa"));
   } catch (error) {
     // throw new Error(error);
     loggers.simple.error(error);
+    // db.insert(error);
   }
 })();
 

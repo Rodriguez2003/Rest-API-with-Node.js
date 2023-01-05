@@ -23,7 +23,9 @@ const loggers = {
       winston.format.timestamp({ format: "MMM-DD-YYYY HH:mm:ss" }),
       winston.format.printf(
         (info) =>
-          `${info.level}: ${[info.timestamp]}: ${info.name}: ${info.parent}`
+          `${info.level}: ${[info.timestamp]}: ${info.message}: ${info.name}: ${
+            info.parent
+          }: ${info.errors}: ${info.sql}`
       )
     ),
     transports: [
