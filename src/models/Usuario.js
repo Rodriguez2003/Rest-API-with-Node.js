@@ -7,7 +7,7 @@ const Usuario = MySQL.define("Usuarios", {
   },
   email: {
     type: DataTypes.STRING,
-    unique: true,
+    allowNull: false,
   },
   activo: {
     type: DataTypes.BOOLEAN,

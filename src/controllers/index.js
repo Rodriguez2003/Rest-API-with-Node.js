@@ -2,10 +2,6 @@ const nano = require("../config/index");
 const CouchDB = process.env.DB_DATABASE;
 const Couch = nano.use(CouchDB);
 
-/**
- *  getItems
- */
-
 //GET all
 async function getItems(req, res) {
   const doclist = await Couch.list({ include_docs: true });

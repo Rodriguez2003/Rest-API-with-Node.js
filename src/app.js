@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const usuarios = require("./routes/Users");
 const Couch = require("./routes/routes");
-const SQL = require("./config/dbconnection");
+const DBconnection = require("./databases/MySQLconnection");
 const loggers = require("./Utils/logger");
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,20 +11,6 @@ const PORT = process.env.PORT || 3000;
 const nano = require("./config/index");
 const CouchDB = process.env.DB_DATABASE;
 const db = nano.use(CouchDB);
-
-//DBconnection
-(async () => {
-  try {
-    await SQL.authenticate();
-    await SQL.sync();
-    loggers.mjson.info("Conexión Exitosa");
-    db.insert(loggers.mjson.info("Conexión Exitosa"));
-  } catch (error) {
-    // throw new Error(error);
-    loggers.simple.error(error);
-    // db.insert(error);
-  }
-})();
 
 //middelware
 app.use(express.json());
@@ -39,5 +25,17 @@ app.use("/api", Couch);
 
 // Server
 app.listen(PORT, function () {
-  loggers.mjson.info(`Server started and running on http://localhost:${PORT}/`);
+  if (PORT) {
+    loggers.mjson.info(
+      `Server started and running on http://localhost:${PORT}/`
+    );
+    db.insert({
+      message: `Server started and running on http://localhost:${PORT}/`,
+    });
+  } else {
+    loggers.simple.error("Error: No port specified");
+    db.insert({
+      message: "Error: No port specified",
+    });
+  }
 });
