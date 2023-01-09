@@ -26,14 +26,12 @@ app.use("/api", Couch);
 // Server
 app.listen(PORT, function () {
   if (PORT) {
-    loggers.mjson.info(
-      `Server started and running on http://localhost:${PORT}/`
-    );
+    loggers.info(`Server started and running on http://localhost:${PORT}/`);
     db.insert({
       message: `Server started and running on http://localhost:${PORT}/`,
     });
   } else {
-    loggers.simple.error("Error: No port specified");
+    loggers.error("Error: No port specified");
     db.insert({
       message: "Error: No port specified",
     });
